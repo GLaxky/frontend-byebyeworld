@@ -71,6 +71,14 @@
               >
                 <el-icon><pointer /></el-icon>浏览报告广场
               </el-button>
+              <br>
+              <el-button
+                type="text"
+                size="small"
+                @click="goToReportPlayground(scope.$index)"
+              >
+                <el-icon><pointer /></el-icon>浏览报告广场
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
