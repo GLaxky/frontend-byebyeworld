@@ -1,0 +1,36 @@
+stages:
+  - build
+  - deploy
+
+
+frontend_build:
+  stage: build
+  script:
+    - echo "start pulling code from repostory..."
+    - cd /home/se3/
+    - rm -rf frontend-byebyeworld
+    #    - git config --global http.proxy ''
+    - git clone git@git.nju.edu.cn:191250088_byebyeworld/frontend-byebyeworld.git
+    - echo "finish pulling code from repostory"
+    - echo "start building the project..."
+    - cd /home/se3/frontend-byebyeworld/
+    - npm install
+    - npm run build
+    - echo "finish building the project"
+  tags:
+    - build
+
+frontend_deploy:
+  stage: deploy
+  script:
+    - echo "start deploying the project..."
+    - rm -rf /var/www/html/*
+    - cd /home/se3/frontend-byebyeworld/
+    - cp -a dist/. public/
+    - cp -a public/. /var/www/html/
+    - nginx -s reload
+    - echo "finish deploying the project"
+  tags:
+    - deploy
+
+

@@ -1,0 +1,28 @@
+{
+  "name": "frontend-byebyeworld",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^0.2.7",
+    "axios": "^0.26.0",
+    "echarts": "^5.3.1",
+    "element-plus": "^2.0.2",
+    "github-markdown-css": "^5.1.0",
+    "highlight": "^0.2.4",
+    "js-cookie": "^3.0.1",
+    "showdown": "^2.1.0",
+    "shutdown": "^0.3.0",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.12",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.2.0",
+    "vite": "^2.8.0"
+  }
+}
