@@ -11,11 +11,17 @@ import { ElMessage } from 'element-plus'
 const routes=[
     {
         path: '/',
-        redirect: '/playground'
+        redirect: '/playground',
+        meta: {
+            title: 'playground'
+        }
     },
     {
         path: "/",
         name: "Home",
+        meta: {
+            title: 'home'
+        },
         component: Home,
         children:[
             {
@@ -119,6 +125,14 @@ const routes=[
                 },
                 component: () => import ( "../pages/Home/subpages/ReportList.vue")
             },
+            {
+                path: "discuss/:taskId",
+                name: "discussOfReport",
+                meta: {
+                    title: '讨论区'
+                },
+                component: () => import ( "../pages/Home/subpages/DiscussOfReport.vue")
+            },
 
             {
                 path: "redoSubmit/:reportId",
@@ -139,6 +153,9 @@ const routes=[
             {
                 path: '/:catchAll(.*)', // 页面不存在的情况下会跳到404页面
                 redirect: "/404",
+                meta: {
+                    title: '找不到页面'
+                },
                 name: "notfound",
                 hidden: true
             }
@@ -147,11 +164,17 @@ const routes=[
     {
         path: "/login",
         name: "Login",
+        meta: {
+            title: '登录'
+        },
         component: Login
     },
     {
         path: "/register",
         name: "Register",
+        meta: {
+            title: '注册'
+        },
         component: Register
     },
 

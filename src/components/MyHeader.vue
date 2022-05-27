@@ -55,6 +55,8 @@ import { useRouter } from "vue-router";
 import {removeToken} from "../utils/loginCookieServices";
 import {getNotices} from "../api/subpages/GetNotice";
 import { ref,onMounted} from 'vue'
+import { h } from 'vue'
+import { ElNotification } from 'element-plus'
 import {reactive} from "vue";
 // import { UserFilled } from '@element-plus/icons-vue'
 export default {
@@ -64,6 +66,9 @@ export default {
     }
   },
     setup() {
+
+
+
         const message =ref(0);
       getNotices().then((res)=>{
 
@@ -88,16 +93,106 @@ export default {
             //  自己封装的axios请求
             getNotices().then((res)=> {
 
+
+
+              let mesList=[];
               let len = res.length;
               let count = 0;
               for (let i = 0; i < len; i++) {
                 let mesItem = res[i];
 
+
+                let mes=null;
+                if(mesItem.type===1||mesItem.type===3||mesItem.type===5||mesItem.type===6){
+                  mes= {
+                    type:mesItem.type,
+                    mes1:{
+                      flag:true,
+                      subMes1: ( (mesItem.detail.split('+')[0]).split('#')[0]).split("<p>")[0],
+                      subMes2:"\""+ ( (mesItem.detail.split('+')[0]).split('#')[0]).split("<p>")[1]+"\"",
+                      subMes3: ( (mesItem.detail.split('+')[0]).split('#')[0]).split("<p>")[2],
+                    },
+                    mes2: "\""+ ( mesItem.detail.split('+')[0]).split('#')[1]+"\"",
+                    mes3: ( mesItem.detail.split('+')[0]).split('#')[2],
+                    taskId: mesItem.taskId,
+                    taskInfo:{
+                      taskId: mesItem.taskId,
+                      taskName:mesItem.detail.split('+')[1]
+                    }
+                  }
+
+                }else {
+                  mes= {
+                    type:mesItem.type,
+                    mes1:{
+                      flag:false,
+                      subMes1: ( (mesItem.detail.split('+')[0]).split('#')[0]),
+                    },
+                    mes2: "\""+ ( mesItem.detail.split('+')[0]).split('#')[1]+"\"",
+                    mes3: ( mesItem.detail.split('+')[0]).split('#')[2],
+                    taskId: mesItem.taskId,
+                    taskInfo:{
+                      taskId: mesItem.taskId,
+                      taskName:mesItem.detail.split('+')[1]
+                    }
+                  }
+                }
+
+
+
+
                 if (mesItem.state === 0) {
+                  mesList.push(mes)
                   count++;
                 }
+
+                mesList.reverse();
               }
               // console.log(count)
+              //多了消息进行弹窗
+              if (message.value<count){
+                for (let k=0;k<count-message.value;k++){
+
+                  let message= mesList[k].mes1.subMes1;
+                  if (mesList[k].mes1.flag){
+                    message=message+mesList[k].mes1.subMes2+mesList[k].mes1.subMes3
+                  }
+                  message=message+mesList[k].mes2+mesList[k].mes3
+
+                  ElNotification({
+                    title: '你有一个新的通知请即时查看',
+                    // message: h('i', { style: 'color: teal' }, message),
+                    message: h(
+                        "p",
+                        {
+                          style:"width: 250px;display: flex;justify-content: space-between;",
+                        },
+                        [
+                          h("span", { style: 'color: teal' }, message),
+                          h(
+                              "a",
+                              {
+                                style: "color: #409EFF;cursor: pointer;margin-left:12px",
+                                on: {
+                                  click: gotoNotice,
+                                },
+                              },
+                              "点击去看看"
+                          ),
+                        ]
+                    ),
+                    type: "info",
+                    onClick: gotoNotice,
+                    customClass: "custom-class",
+                    duration:3200,
+
+                  })
+
+                }
+
+
+              }
+
               message.value=count;
             })
           }, 0)
@@ -117,11 +212,16 @@ export default {
                 router.push("/personalInfo");
             }
         };
+        const gotoNotice=()=>{
+          router.push("/notices");
+
+        }
 
         return {
             handleCommand,
             message,
-            timer
+            timer,
+          gotoNotice
         };
     },
 
