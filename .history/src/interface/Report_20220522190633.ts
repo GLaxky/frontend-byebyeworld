@@ -1,0 +1,17 @@
+export default interface Report{
+    projectId:number,
+    referenceReportId: number,
+    refRelation: number,
+    reportId: number,
+    haveSubmittedReport: boolean,
+    workerId: number,
+    workerName: string,
+    bugImgs: Array<string>,
+    // bugImgsDownloadApi: String,
+    bugDescription: string,
+    revealSteps: string,
+    devices: string,
+    score:number,
+    averageScore:number,
+    assessPeople: number,
+}
