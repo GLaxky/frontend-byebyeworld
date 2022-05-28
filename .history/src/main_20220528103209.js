@@ -21,7 +21,7 @@ Object.keys(ElIcons).some(item => {
 app.use(VueRouter)
 app.use(ElementPlus)
 app.mount('#app')
-window.router=VueRouter
+window.router=router
 // console.log(getToken())
 
 

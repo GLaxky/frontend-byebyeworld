@@ -35,7 +35,7 @@
                 </el-table-column>
                 <el-table-column width="120">
                   <template #default="scope">
-                    <el-button size="small" @click="handleJump(scope.row.taskInfo)">去看看吧</el-button>
+                    <el-button size="small" @click="handleJump(scope.row.taskInfo,scope.row.type)">去看看吧</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -100,10 +100,11 @@ getNotices().then((res)=>{
     let curTime = new Date(oldTime);
     let date= curTime.toLocaleString().split(' ')[0]
     let time = curTime.toLocaleString().split(' ')[1]
-    console.log("时间"+date+" " +time);
+    // console.log("时间"+date+" " +time);
     let mes=null;
-    if(mesItem.type===1||mesItem.type===3){
+    if(mesItem.type===1||mesItem.type===3||mesItem.type===5||mesItem.type===6){
       mes= {
+        type:mesItem.type,
         date:  date,
         time: time,
         mes1:{
@@ -123,6 +124,7 @@ getNotices().then((res)=>{
 
     }else {
       mes= {
+        type:mesItem.type,
         date:  date,
         time: time,
         mes1:{
@@ -150,16 +152,24 @@ getNotices().then((res)=>{
   state.finish.reverse()
   // console.log(res);
 })
-const handleJump = (taskInfo) => {
+const handleJump = (taskInfo,type) => {
   // console.log("jump:taskid"+taskid);
-
+  // console.log(type)
+if (type===5||type===6){
   router.push({
-    path: '/reportList/'+taskInfo.taskId,
-    query:{
+    path: '/discuss/' + taskInfo.taskId,
+    query: {
       tName: taskInfo.taskName
     }
   })
-
+}else {
+  router.push({
+    path: '/reportList/' + taskInfo.taskId,
+    query: {
+      tName: taskInfo.taskName
+    }
+  })
+}
 };
 const goBack=()=>{
   router.back()

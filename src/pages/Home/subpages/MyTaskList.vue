@@ -82,7 +82,7 @@
                     size="small"
                     @click="checkInfo(scope.$index, scope.row)"
                     >
-                    <el-icon><pointer /></el-icon>查看详情
+                      <el-icon><View /></el-icon>&thinsp;  查看详情
                     </el-button>
                     <br>
                     <el-button
@@ -90,8 +90,16 @@
                     size="small"
                     @click="goToReportPlayground(scope.$index)"
                     >
-                    <el-icon><pointer /></el-icon>浏览报告广场
+                      <el-icon><Tickets /></el-icon> &thinsp; 浏览报告广场
                     </el-button>
+                  <br>
+                  <el-button
+                      type="text"
+                      size="small"
+                      @click="goToReportDiscuss(scope.$index)"
+                  >
+                    <el-icon><ChatLineSquare /></el-icon>&thinsp; 问答区
+                  </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -102,8 +110,8 @@
             background
             layout="prev, pager, next"
             :current-page="tableData.pageIndex"
-            :page-size="tableData.pageSize" 
-            :total="pageTotal" 
+            :page-size="tableData.pageSize"
+            :total="pageTotal"
             @current-change="handlePageChange"
           >
           </el-pagination>
@@ -124,7 +132,7 @@
                   <el-descriptions-item label="报名情况" label-align="" align="center"
                     >{{tableData.table[idx].peopleSituation}}</el-descriptions-item
                   >
-                  
+
                   <el-descriptions-item label="测试类型" label-align="" align="center"
                     ><el-tag size="large" color=" #f8e3c5" type="warning">{{tableData.table[idx].type}}</el-tag>
                     </el-descriptions-item
@@ -161,7 +169,7 @@
                     ><el-tag size="large">{{tableData.table[idx].endDate}}</el-tag>
                     </el-descriptions-item
                   >
-                  
+
                   <el-descriptions-item label="测试文档&&应用可执行文件" label-align="" align="center"
                     >
                     <el-link  type="primary" :href="tableData.table[idx].testAndAppFile"><el-icon><mouse /></el-icon>点击下载</el-link>
@@ -173,7 +181,7 @@
                   </el-descriptions-item>
                 </el-descriptions>
               </el-card>
-              
+
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="dialogForCheck = false">返回</el-button>
@@ -217,7 +225,7 @@
     }
   }
 
-    const tmpTitle=ref("")   
+    const tmpTitle=ref("")
     let idx = ref(0)
 
 
@@ -248,7 +256,7 @@
       tableData.table=allTableData.value.slice(tableData.pageIndex-1,tableData.pageIndex-1+tableData.pageSize)
       loading.value=false;
     })
-    
+
   })
 
   const reflesh=(()=>{
@@ -265,6 +273,15 @@
     idx.value = index
     router.push({
       path: '/reportList/'+tableData.table[idx.value].projectId,
+      query:{
+        tName: tableData.table[idx.value].projectName
+      }
+    })
+  }
+  const goToReportDiscuss=(index:number)=>{
+    idx.value = index
+    router.push({
+      path: '/discuss/'+tableData.table[idx.value].projectId,
       query:{
         tName: tableData.table[idx.value].projectName
       }
